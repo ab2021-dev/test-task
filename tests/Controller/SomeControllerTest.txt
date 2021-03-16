@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Exception;
+
+class CustomException extends Exception
+{
+
+}
+
+class Demo
+{
+    public function some()
+    {
+        echo '123';
+    }
+
+    public function doSomething()
+    {
+        echo '456';
+    }
+}
+
+class SomeControllerTest extends WebTestCase
+{
+    public function testDemo()
+    {
+
+       $this->markTestSkipped();
+       $this->expectException(CustomException::class);
+       $demoStub = $this->createMock(Demo::class);
+       $demoStub->method('some')->willThrowException(new CustomException('Exception from some method.'));
+//       $demoIntance = new $demoStub();
+       $demoStub->some();
+
+//        $this->expectException(CustomException::class);
+//        $stub = $this->createMock(Demo::class);
+////        $stub->method('doSomething')->will($this->throwException(new CustomException('Exception from some method.')));
+//        $stub->method('doSomething')->willThrowException(new CustomException('Exception from some method.'));
+//        $stub->doSomething();
+    }
+}
+

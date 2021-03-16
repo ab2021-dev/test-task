@@ -1,0 +1,57 @@
+version: '3'
+services:
+    workspace:
+        build:
+            context: ./docker/build/workspace
+        container_name: workspace
+        stdin_open: true
+        tty: true
+        entrypoint: /bin/sh
+        environment:
+            USER: 1000
+            GROUP: 1000
+        volumes:
+            - ./:/var/www
+#            - /etc/localtime:/etc/localtime:ro
+#            - /etc/timezone:/etc/timezone:ro
+
+    php:
+        build:
+            context: ./docker/build/php
+        container_name: php
+        working_dir: /var/www
+        environment:
+            USER: 1000
+            GROUP: 1000
+        volumes:
+            - ./:/var/www
+#            - /etc/localtime:/etc/localtime:ro
+#            - /etc/timezone:/etc/timezone:ro
+
+    nginx:
+        build:
+            context: ./docker/build/nginx
+        container_name: nginx
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+#            - /etc/localtime:/etc/localtime:ro
+#            - /etc/timezone:/etc/timezone:ro
+        ports:
+            - 80:80
+        depends_on:
+            - php
+
+    database:
+        image: mysql:5.7
+        container_name: database
+        environment:
+            MYSQL_DATABASE: schedule
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - dbdata:/var/lib/mysql
+#            - /etc/localtime:/etc/localtime:ro
+#            - /etc/timezone:/etc/timezone:ro
+
+volumes:
+    dbdata:

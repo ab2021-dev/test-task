@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "workStart": "10:00",
+    "lunchStart": "13:00"
+  },
+  {
+    "id": "2",
+    "workStart": "09:00",
+    "lunchStart": "12:00"
+  }
+]
